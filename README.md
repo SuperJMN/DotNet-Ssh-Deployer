@@ -8,3 +8,11 @@ Example:
 `Deployer --project-file=Project.csproj`
 
 Easy enough? Try it and freak it out!
+
+It will deduce even the project file. 
+
+# Requirements
+
+- A Raspberry Pi with Raspbian
+- SSH enabled on the Pi
+- Your Pi should accessible through your network
