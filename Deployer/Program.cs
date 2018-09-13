@@ -14,6 +14,7 @@ namespace Deployer
         {
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .MinimumLevel.Verbose()
                 .CreateLogger();
             
             Parser.Default.ParseArguments<CommandLineOptions>(args)
@@ -110,13 +111,21 @@ namespace Deployer
                 DeleteExisting(options, clients.SshClient);
             }
 
-            clients.SftpClient.CreateDirectory(options.DestinationPath);
+            CreateOutputDirectory(options.DestinationPath, clients.SshClient);
 
             CopyOutput(options, clients.SftpClient);
         }
 
+        private static void CreateOutputDirectory(string destinationPath, SshClient clientsSshClient)
+        {
+            Log.Verbose("Creating destination directory {Directory}", destinationPath);
+            clientsSshClient.RunCommand($"mkdir -p {destinationPath}");
+        }
+        
         private static void DeleteExisting(DeploymentOptions options, SshClient sshClient)
         {
+            Log.Verbose("Deleting previous {Directory}", options.DestinationPath);
+
             sshClient.RunCommand($"rm -rf {options.DestinationPath}");
         }
 
@@ -177,7 +186,7 @@ namespace Deployer
 
         private static void Publish(DeploymentOptions options)
         {
-            Log.Information("Building project...");
+            Log.Information("Building project {Project}...", options.Project);
             var parameters = $@"publish ""{options.Project}"" --configuration Release -r linux-arm";
             var cmd = "dotnet";
             ProcessUtils.Run(cmd, parameters);
