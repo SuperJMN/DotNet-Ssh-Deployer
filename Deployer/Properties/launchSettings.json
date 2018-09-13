@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Deployer": {
+      "commandName": "Project",
+      "commandLineArgs": "--source-project=C:\\Users\\super\\source\\repos\\Deployer\\Deployer\\Deployer.csproj"
+    }
+  }
+}
