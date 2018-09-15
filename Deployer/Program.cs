@@ -111,12 +111,25 @@ namespace Deployer
                 DeleteExisting(options, clients.SshClient);
             }
 
-            CreateOutputDirectory(options.DestinationPath, clients.SshClient);
+            PrepareOutputDirectory(options.DestinationPath, options.PublishFolder, clients.SshClient);
 
             CopyOutput(options, clients.SftpClient);
         }
 
-        private static void CreateOutputDirectory(string destinationPath, SshClient clientsSshClient)
+        private static void PrepareOutputDirectory(string destination, string origin, SshClient client)
+        {
+            CreateDirectory(destination, client);
+
+            var subDirsInParent = Directory.GetDirectories(origin, "*.*", SearchOption.AllDirectories);
+            foreach (var subdirInParent in subDirsInParent)
+            {
+                var transformToDest = subdirInParent.Replace(origin, "").Replace("\\", "/");
+                var finalDir = destination + transformToDest;
+                CreateDirectory(finalDir, client);
+            }
+        }
+
+        private static void CreateDirectory(string destinationPath, SshClient clientsSshClient)
         {
             Log.Verbose("Creating destination directory {Directory}", destinationPath);
             clientsSshClient.RunCommand($"mkdir -p {destinationPath}");
@@ -131,9 +144,7 @@ namespace Deployer
 
         private static void CopyOutput(DeploymentOptions options, SftpClient client)
         {
-            var publishFolder = GetPublishFolder(options);
-
-            var dir = new DirectoryInfo(publishFolder);
+            var dir = new DirectoryInfo(options.PublishFolder);
             var files = dir.GetFiles("*.*", SearchOption.AllDirectories);
 
             int total = files.Length;
@@ -143,7 +154,7 @@ namespace Deployer
                 var percent = (float)copied / total;
                 Log.Verbose("{Percentage:P}", percent);
 
-                var fileDestination = file.FullName.Replace(publishFolder, "").Replace("\\", "/");
+                var fileDestination = file.FullName.Replace(options.PublishFolder, "").Replace("\\", "/");
                 fileDestination = options.DestinationPath + fileDestination;
                 Upload(client, file, fileDestination);
 
@@ -151,30 +162,7 @@ namespace Deployer
             }
         }
 
-        private static string GetPublishFolder(DeploymentOptions options)
-        {
-            var xml = new XPathDocument(options.Project);
-            var nav = xml.CreateNavigator();
-            var node = nav.SelectSingleNode("/Project/PropertyGroup/TargetFramework");
-            var targetFramework = node.InnerXml;
-
-            var configName = "Release|AnyCPU";
-            var xPath = $@"/Project/PropertyGroup[@Condition=""'$(Configuration)|$(Platform)'=='{configName}'""]/OutputPath";
-            var outputPathNode = nav.SelectSingleNode(xPath);
-
-            string outputPath;
-            if (outputPathNode == null)
-            {
-                outputPath = Path.Combine("bin", "release");
-            }
-            else
-            {
-                outputPath = outputPathNode.InnerXml;
-            }
-
-            var publishFolder = Path.Combine(options.Source, outputPath, targetFramework, "linux-arm", "publish");
-            return publishFolder;
-        }
+        
 
         private static void Upload(SftpClient client, FileInfo file, string destination)
         {

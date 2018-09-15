@@ -26,6 +26,35 @@ namespace Deployer
             return assemblyName;
         }
 
+        public string PublishFolder
+        {
+            get
+            {
+                var xml = new XPathDocument(Project);
+                var nav = xml.CreateNavigator();
+                var node = nav.SelectSingleNode("/Project/PropertyGroup/TargetFramework");
+                var targetFramework = node.InnerXml;
+
+                var configName = "Release|AnyCPU";
+                var xPath =
+                    $@"/Project/PropertyGroup[@Condition=""'$(Configuration)|$(Platform)'=='{configName}'""]/OutputPath";
+                var outputPathNode = nav.SelectSingleNode(xPath);
+
+                string outputPath;
+                if (outputPathNode == null)
+                {
+                    outputPath = Path.Combine("bin", "release");
+                }
+                else
+                {
+                    outputPath = outputPathNode.InnerXml;
+                }
+
+                var publishFolder = Path.Combine(Source, outputPath, targetFramework, "linux-arm", "publish");
+                return publishFolder;
+            }
+        }
+
         public string Project { get; set; }
     }
 }
