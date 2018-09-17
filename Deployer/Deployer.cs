@@ -21,7 +21,7 @@ namespace SshDeploy
 
                 var options = GetDeplomentOptions(o);
 
-                Log.Verbose("Using options {@Options}", o);
+                Log.Verbose("Using options {@Options}", options);
 
                 Deploy(options);
             }
