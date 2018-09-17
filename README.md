@@ -28,9 +28,8 @@ After installing the tool,
   * `dotnet ssh deploy --host=MyRaspberry --username=testuser --password=1234`
 
 # Running your application
-- You should install .NET Core into your Raspberry Pi :)
-- Follow these instructions to install it inside Raspbian:
-
+1. You should install .NET Core into your Raspberry Pi :)
+2. Follow these instructions to install it inside Raspbian:
 ```
 sudo apt-get -y update
 sudo apt-get -y install libunwind8 gettext
@@ -42,7 +41,7 @@ sudo tar -xvf aspnetcore-runtime-2.1.0-linux-arm.tar.gz -C /opt/dotnet/
 sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 dotnet --info
 ```
-- Go to the directory where your deployed application is
-- Run it by using `.\[NameOfYourApp]`. If you don't know it, just type `ls` and look for the file with no extension with a different color (non-executable files are usually in light gray text)
+3. Go to the directory where you deployed you application
+4. Run it by using `.\[NameOfYourApp]`. If you don't know it, just type `ls` and look for the file with no extension with a different color (non-executable files are usually in light gray text)
 
 Easy enough? Try it and freak it out!
