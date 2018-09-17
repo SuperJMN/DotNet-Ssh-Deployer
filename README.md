@@ -23,6 +23,7 @@ After installing the tool,
     - Your RPi's hostname is 'raspberrypi', 
     - the username is 'pi'  
     - and the password is 'raspberry'
+    - the destination directory (for you application in your Pi) will be `/home/pi/DotNetApps/`
 - If you aren't using the defaults, you can specify each argument using the appropriate arguments with the command:
   * `dotnet ssh deploy --host=MyRaspberry --username=testuser --password=1234`
 
