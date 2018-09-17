@@ -42,5 +42,7 @@ sudo tar -xvf aspnetcore-runtime-2.1.0-linux-arm.tar.gz -C /opt/dotnet/
 sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 dotnet --info
 ```
+- Go to the directory where your deployed application is
+- Run it by using `.\[NameOfYourApp]`. If you don't know it, just type `ls` and look for the file with no extension with a different color (non-executable files are usually in light gray text)
 
 Easy enough? Try it and freak it out!
