@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using System.Xml.XPath;
 
-namespace Deployer
+namespace SshDeploy
 {
     internal class DeploymentOptions
     {

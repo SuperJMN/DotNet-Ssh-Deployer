@@ -3,13 +3,18 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <AssemblyName>dotnet-ssh</AssemblyName>
+    <RootNamespace>SshDeploy</RootNamespace>
+    <PackAsTool>true</PackAsTool>
   </PropertyGroup>
 
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="ILRepack.MSBuild.Task" Version="1.0.9" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="Serilog.Sinks.Console" Version="3.1.1" />
     <PackageReference Include="SSH.NET" Version="2016.1.0" />
-  </ItemGroup>
+  </ItemGroup>  
 
 </Project>

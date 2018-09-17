@@ -1,7 +1,7 @@
 ﻿using System;
 using Renci.SshNet;
 
-namespace Deployer
+namespace SshDeploy
 {
     internal class Clients : IDisposable
     {

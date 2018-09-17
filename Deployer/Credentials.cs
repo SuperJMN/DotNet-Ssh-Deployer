@@ -1,4 +1,4 @@
-﻿namespace Deployer
+﻿namespace SshDeploy
 {
     internal class Credentials
     {

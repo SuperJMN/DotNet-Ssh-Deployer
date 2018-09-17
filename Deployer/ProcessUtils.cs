@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace Deployer
+namespace SshDeploy
 {
     public static class ProcessUtils
     {
