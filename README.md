@@ -42,6 +42,6 @@ sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 dotnet --info
 ```
 3. Go to the directory where you deployed you application
-4. Run it by using `.\[NameOfYourApp]`. If you don't know it, just type `ls` and look for the file with no extension with a different color (non-executable files are usually in light gray text)
+4. Run it by using `./[NameOfYourApp]`, for example `./HelloWorld`. If you don't know the name, just type `ls` and look for the file with no extension in a different color (non-executable files are usually in light gray text)
 
 Easy enough? Try it and freak it out!
