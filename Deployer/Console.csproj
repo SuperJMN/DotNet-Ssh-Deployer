@@ -6,6 +6,8 @@
     <AssemblyName>dotnet-ssh</AssemblyName>
     <RootNamespace>SshDeploy</RootNamespace>
     <PackAsTool>true</PackAsTool>
+    <Version>1.1.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 
