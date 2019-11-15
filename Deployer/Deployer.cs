@@ -38,22 +38,22 @@ namespace SshDeploy
         {
             var optionsFromFile = LoadFromFile(Program.OptionsFilename);
             var optionsFromCommandLine = o;
-            var optionFromDefaults = GetDefaultOptions("MyApp");
+            var projectPath = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj").FirstOrDefault();
 
-            var mergedOptions = MergeOptions(optionFromDefaults, optionsFromFile, optionsFromCommandLine);
-
-            var projectFile = mergedOptions.Project ?? Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj").FirstOrDefault();
-
-            if (projectFile == null)
+            if (projectPath == null)
             {
                 throw new InvalidOperationException("Cannot find a project file to deploy");
             }
 
+            var optionFromDefaults = GetDefaultOptions(projectPath);
+            var mergedOptions = MergeOptions(optionFromDefaults, optionsFromFile, optionsFromCommandLine);
+
             return new DeploymentOptions
             {
-                Project = projectFile,
+                Project = projectPath,
                 DestinationPath = mergedOptions.Destination,
                 Host = mergedOptions.Host,
+                Framework = mergedOptions.Framework,
                 
                 Credentials = new Credentials
                 {
@@ -80,17 +80,22 @@ namespace SshDeploy
                 Destination = b.Destination ?? a.Destination,
                 Password = b.Password ?? a.Password,
                 UserName = b.UserName ?? a.UserName,
+                Framework = b.Framework ?? a.Framework,
             };
         }
 
-        public static DeploymentUserOptions GetDefaultOptions(string projectName)
+        public static DeploymentUserOptions GetDefaultOptions(string projectPath)
         {
+            var projectName = Path.GetFileNameWithoutExtension(projectPath);
+
             return new DeploymentUserOptions
             {
                 Destination = "/home/pi/DotNetApps" + "/" + projectName,
                 Host = "raspberrypi",
                 Password = "raspberry",
-                UserName = "pi"
+                UserName = "pi",
+                Framework = Project.GetFramework(projectPath),
+                Project = projectPath,
             };
         }
 
@@ -98,10 +103,16 @@ namespace SshDeploy
         {
             try
             {
-                return JsonConvert.DeserializeObject<DeploymentUserOptions>(File.ReadAllText(sshDeploymentJson));
+                if (File.Exists(sshDeploymentJson))
+                {
+                    return JsonConvert.DeserializeObject<DeploymentUserOptions>(File.ReadAllText(sshDeploymentJson));
+                }
+
+                return new DeploymentUserOptions();
             }
-            catch
+            catch (Exception ex)
             {
+                Log.Error(ex, "Couldn't load options file");
                 return new DeploymentUserOptions();
             }
         }

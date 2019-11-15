@@ -32,7 +32,6 @@ namespace SshDeploy
             return 0;
         }
 
-
         public static void RemoteOperations(DeploymentOptions options)
         {
             var sftp = new SftpClient(options.Host, options.Credentials.User, options.Credentials.Password);
@@ -126,7 +125,7 @@ namespace SshDeploy
         public static void Publish(DeploymentOptions options)
         {
             Log.Information("Building project {Project}...", options.Project);
-            var parameters = $@"publish ""{options.Project}"" --configuration Release -r linux-arm";
+            var parameters = $@"publish ""{options.Project}"" --configuration Release -r linux-arm -f {options.Framework}";
             var cmd = "dotnet";
             ProcessUtils.Run(cmd, parameters);
         }

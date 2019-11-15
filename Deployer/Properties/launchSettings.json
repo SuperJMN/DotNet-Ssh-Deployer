@@ -2,8 +2,8 @@
   "profiles": {
     "Deployer": {
       "commandName": "Project",
-      "commandLineArgs": "create-template -p SuperProject",
-      "workingDirectory": "C:\\Users\\super\\source\\repos\\HelloWorldJMN\\HelloWorldJMN"
+      "commandLineArgs": "deploy --password=blacksun",
+      "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
     }
   }
 }

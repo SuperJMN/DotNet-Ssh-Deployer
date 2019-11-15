@@ -21,6 +21,9 @@ namespace SshDeploy
         [Option('p', "password", Required = false, HelpText = "Password")]
         public string Password { get; set; }
 
+        [Option('f', "framework", Required = false, HelpText = "Target framework")]
+        public string Framework { get; set; }
+
         [Option(HelpText = "Prints all messages to standard output", Default = false)]
         [JsonIgnore]
         public bool Verbose { get; set; }
