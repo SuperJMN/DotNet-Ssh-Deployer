@@ -18,7 +18,7 @@ This will help you deploy your NET Core applications (Console or ASP.NET) to Ras
 
 After installing the tool, 
 - open a command prompt on the folder where your .csproj is located
-- run `dotnet ssh deploy`. It will try to deploy with the default options
+- run `dotnet-ssh deploy`. It will try to deploy with the default options
  * Default options: 
     - Your RPi's hostname is 'raspberrypi', 
     - the username is 'pi'  
