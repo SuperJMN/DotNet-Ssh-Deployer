@@ -22,8 +22,9 @@ namespace SshDeploy
 
         private static int WriteTemplate(CreateTemplateOptions templateOptions)
         {
-            var opts = Deployer.GetDefaultOptions(templateOptions.ProjectName);
-            File.WriteAllText(OptionsFilename, JsonConvert.SerializeObject(opts, new JsonSerializerSettings()
+            var projectFile = Project.GetProjectFilePath();
+            var opts = Deployer.GetDefaultOptions(projectFile, templateOptions.ProjectName);
+            File.WriteAllText(OptionsFilename, JsonConvert.SerializeObject(opts, new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
                 NullValueHandling = NullValueHandling.Ignore

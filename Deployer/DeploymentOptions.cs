@@ -40,6 +40,11 @@ namespace SshDeploy
 
             return frameworks.InnerXml.Split(";");
         }
+
+        public static string GetProjectFilePath()
+        {
+            return Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj").FirstOrDefault();
+        }
     }
 
     internal class DeploymentOptions

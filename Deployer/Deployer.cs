@@ -38,7 +38,7 @@ namespace SshDeploy
         {
             var optionsFromFile = LoadFromFile(Program.OptionsFilename);
             var optionsFromCommandLine = o;
-            var projectPath = Directory.GetFiles(Directory.GetCurrentDirectory(), "*.csproj").FirstOrDefault();
+            var projectPath = Project.GetProjectFilePath();
 
             if (projectPath == null)
             {
@@ -75,7 +75,7 @@ namespace SshDeploy
         {
             return new DeploymentUserOptions
             {
-                Project = b.Project ?? a.Project,
+                ProjectName = b.ProjectName ?? a.ProjectName,
                 Host = b.Host ?? a.Host,
                 Destination = b.Destination ?? a.Destination,
                 Password = b.Password ?? a.Password,
@@ -84,10 +84,8 @@ namespace SshDeploy
             };
         }
 
-        public static DeploymentUserOptions GetDefaultOptions(string projectPath)
+        public static DeploymentUserOptions GetDefaultOptions(string projectPath, string projectName = null)
         {
-            var projectName = Path.GetFileNameWithoutExtension(projectPath);
-
             return new DeploymentUserOptions
             {
                 Destination = "/home/pi/DotNetApps" + "/" + projectName,
@@ -95,7 +93,7 @@ namespace SshDeploy
                 Password = "raspberry",
                 UserName = "pi",
                 Framework = Project.GetFramework(projectPath),
-                Project = projectPath,
+                ProjectName = projectName ?? Path.GetFileNameWithoutExtension(projectPath),
             };
         }
 

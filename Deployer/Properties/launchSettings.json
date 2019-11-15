@@ -2,7 +2,7 @@
   "profiles": {
     "Deployer": {
       "commandName": "Project",
-      "commandLineArgs": "deploy --password=blacksun",
+      "commandLineArgs": "create-template -p Sample",
       "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
     }
   }

@@ -7,7 +7,7 @@ namespace SshDeploy
     public class DeploymentUserOptions
     {
         [Option('s', "source-project", Required = false, HelpText = "Source project")]
-        public string Project { get; set; }
+        public string ProjectName { get; set; }
 
         [Option('d', "destination", Required = false, HelpText = "Full Destination folder")]
         public string Destination { get; set; }
