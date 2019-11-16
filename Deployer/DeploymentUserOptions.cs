@@ -24,8 +24,14 @@ namespace SshDeploy
         [Option('f', "framework", Required = false, HelpText = "Target framework")]
         public string Framework { get; set; }
 
-        [Option(HelpText = "Prints all messages to standard output", Default = false)]
+        [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
         [JsonIgnore]
         public bool Verbose { get; set; }
+
+        [Option(HelpText = "Selects the display for running the application")]
+        public string Display { get; set; }
+
+        [Option('r', "run", Default = false)]
+        public bool RunAfterDeployment { get; set; }
     }
 }

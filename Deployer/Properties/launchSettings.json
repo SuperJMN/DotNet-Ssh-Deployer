@@ -2,7 +2,7 @@
   "profiles": {
     "Deployer": {
       "commandName": "Project",
-      "commandLineArgs": "create-template -p Sample",
+      "commandLineArgs": "deploy --run",
       "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
     }
   }

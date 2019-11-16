@@ -54,6 +54,8 @@ namespace SshDeploy
                 DestinationPath = mergedOptions.Destination,
                 Host = mergedOptions.Host,
                 Framework = mergedOptions.Framework,
+                Display = mergedOptions.Display,
+                RunAfterDeployment = mergedOptions.RunAfterDeployment,
                 
                 Credentials = new Credentials
                 {
@@ -81,6 +83,8 @@ namespace SshDeploy
                 Password = b.Password ?? a.Password,
                 UserName = b.UserName ?? a.UserName,
                 Framework = b.Framework ?? a.Framework,
+                Display = b.Display ?? a.Display,
+                RunAfterDeployment = b.RunAfterDeployment || a.RunAfterDeployment,
             };
         }
 
@@ -96,6 +100,7 @@ namespace SshDeploy
                 UserName = "pi",
                 Framework = Project.GetFramework(projectPath),
                 ProjectName = projectName,
+                Display = ":0.0",
             };
         }
 
@@ -127,7 +132,6 @@ namespace SshDeploy
 
             loggingLevelSwitch.MinimumLevel = o.Verbose ? LogEventLevel.Verbose : LogEventLevel.Information;
         }
-
 
         private static void Deploy(DeploymentOptions options)
         {

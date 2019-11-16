@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Net.Http;
 using CommandLine;
 using Newtonsoft.Json;
 using Renci.SshNet;
@@ -44,13 +45,34 @@ namespace SshDeploy
 
                 SyncFiles(options, clients);
                 GiveExecutablePermission(options, clients);
+                RunIfSelected(options, clients.SshClient);
             }
+        }
+
+        private static void RunIfSelected(DeploymentOptions options, SshClient ssh)
+        {
+            if (!options.RunAfterDeployment)
+            {
+                return;
+            }
+
+            Log.Information($"Running application on display {options.Display}");
+            var commandPath = GetExecutableName(options);
+            Log.Information("Application is running!");
+            Log.Information("Waiting for the application to be closed...");
+            Log.Warning("(this command will wait for the application to finish. Close it before trying to deploy again)");
+            ssh.RunCommand($"DISPLAY={options.Display} nohup {commandPath}");
         }
 
         private static void GiveExecutablePermission(DeploymentOptions options, Clients clients)
         {
-            var executable = options.DestinationPath + "/" + options.AssemblyName;
+            var executable = GetExecutableName(options);
             clients.SshClient.RunCommand($"chmod +x {executable}");
+        }
+
+        private static string GetExecutableName(DeploymentOptions options)
+        {
+            return options.DestinationPath + "/" + options.AssemblyName;
         }
 
         private static void SyncFiles(DeploymentOptions options,
