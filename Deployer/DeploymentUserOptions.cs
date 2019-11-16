@@ -31,6 +31,9 @@ namespace SshDeploy
         [Option(HelpText = "Selects the display for running the application")]
         public string Display { get; set; }
 
+        [Option('a', "architecture", Required = false, HelpText = "Set the architecture (runtime)")]
+        public string Runtime { get; set; }
+
         [Option('r', "run", Default = false)]
         public bool RunAfterDeployment { get; set; }
     }

@@ -55,8 +55,10 @@ namespace SshDeploy
                 Host = mergedOptions.Host,
                 Framework = mergedOptions.Framework,
                 Display = mergedOptions.Display,
+                Runtime = mergedOptions.Runtime,
                 RunAfterDeployment = mergedOptions.RunAfterDeployment,
-                
+                PublishFolder = Project.GetPublishFolder(projectPath, mergedOptions.Runtime),
+                AssemblyName = Project.GetAssemblyName(projectPath),
                 Credentials = new Credentials
                 {
                     Password = mergedOptions.Password,
@@ -84,6 +86,7 @@ namespace SshDeploy
                 UserName = b.UserName ?? a.UserName,
                 Framework = b.Framework ?? a.Framework,
                 Display = b.Display ?? a.Display,
+                Runtime = b.Runtime ?? a.Runtime,
                 RunAfterDeployment = b.RunAfterDeployment || a.RunAfterDeployment,
             };
         }
@@ -100,6 +103,7 @@ namespace SshDeploy
                 UserName = "pi",
                 Framework = Project.GetFramework(projectPath),
                 ProjectName = projectName,
+                Runtime = "linux-arm",
                 Display = ":0.0",
             };
         }

@@ -148,7 +148,7 @@ namespace SshDeploy
         public static void Publish(DeploymentOptions options)
         {
             Log.Information("Building project {Project}...", options.Project);
-            var parameters = $@"publish ""{options.Project}"" --configuration Release -r linux-arm -f {options.Framework}";
+            var parameters = $@"publish ""{options.Project}"" --configuration Release -r {options.Runtime} -f {options.Framework}";
             var cmd = "dotnet";
             ProcessUtils.Run(cmd, parameters);
         }
