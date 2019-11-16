@@ -6,7 +6,7 @@ using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 
-namespace SshDeploy
+namespace NetCoreSsh.Deployment
 {
     internal static class Deployer
     {
@@ -144,7 +144,7 @@ namespace SshDeploy
             Program.Publish(options);
             Program.RemoteOperations(options);
 
-            Log.Information("Deployment done!");
+            Log.Information("Finished!");
         }
     }
 }

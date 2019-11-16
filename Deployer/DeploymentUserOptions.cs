@@ -1,7 +1,7 @@
 ﻿using CommandLine;
 using Newtonsoft.Json;
 
-namespace SshDeploy
+namespace NetCoreSsh
 {
     [Verb("deploy")]
     public class DeploymentUserOptions

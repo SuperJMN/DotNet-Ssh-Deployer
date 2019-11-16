@@ -1,11 +1,11 @@
 ﻿using System.IO;
-using System.Net.Http;
 using CommandLine;
+using NetCoreSsh.Deployment;
 using Newtonsoft.Json;
 using Renci.SshNet;
 using Serilog;
 
-namespace SshDeploy
+namespace NetCoreSsh
 {
     class Program
     {

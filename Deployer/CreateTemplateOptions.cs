@@ -1,6 +1,6 @@
 ﻿using CommandLine;
 
-namespace SshDeploy
+namespace NetCoreSsh
 {
     [Verb("create-template")]
     public class CreateTemplateOptions

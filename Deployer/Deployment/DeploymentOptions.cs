@@ -1,4 +1,4 @@
-﻿namespace SshDeploy
+﻿namespace NetCoreSsh.Deployment
 {
     internal class DeploymentOptions
     {

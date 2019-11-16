@@ -4,7 +4,7 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>dotnet-ssh</AssemblyName>
-    <RootNamespace>SshDeploy</RootNamespace>
+    <RootNamespace>NetCoreSsh</RootNamespace>
     <PackAsTool>true</PackAsTool>
     <Version>1.1.3</Version>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>

@@ -1,7 +1,7 @@
 ﻿using System;
 using Renci.SshNet;
 
-namespace SshDeploy
+namespace NetCoreSsh.Deployment
 {
     internal class Clients : IDisposable
     {

@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.XPath;
 
-namespace SshDeploy
+namespace NetCoreSsh.Deployment
 {
     internal class Project
     {
