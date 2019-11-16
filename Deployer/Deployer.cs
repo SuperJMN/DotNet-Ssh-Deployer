@@ -84,8 +84,10 @@ namespace SshDeploy
             };
         }
 
-        public static DeploymentUserOptions GetDefaultOptions(string projectPath, string projectName = null)
+        public static DeploymentUserOptions GetDefaultOptions(string projectPath)
         {
+            var projectName = Path.GetFileNameWithoutExtension(projectPath);
+
             return new DeploymentUserOptions
             {
                 Destination = "/home/pi/DotNetApps" + "/" + projectName,
@@ -93,7 +95,7 @@ namespace SshDeploy
                 Password = "raspberry",
                 UserName = "pi",
                 Framework = Project.GetFramework(projectPath),
-                ProjectName = projectName ?? Path.GetFileNameWithoutExtension(projectPath),
+                ProjectName = projectName,
             };
         }
 

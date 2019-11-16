@@ -6,8 +6,19 @@
     <AssemblyName>dotnet-ssh</AssemblyName>
     <RootNamespace>SshDeploy</RootNamespace>
     <PackAsTool>true</PackAsTool>
-    <Version>1.1.1</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.1.2</Version>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Description>This tool deploys your application to a remote computer (usually a Raspberry Pi)</Description>
+    <PackageReleaseNotes>For more info, please go to https://github.com/SuperJMN/DotNet-Ssh-Deployer</PackageReleaseNotes>
+    <RepositoryUrl>https://github.com/SuperJMN/DotNet-Ssh-Deployer</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>dotnet,tool,ssh,deploy,raspberry</PackageTags>
+    <Product>dotnet-ssh</Product>
+    <PackageId>dotnet-ssh</PackageId>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <Company>dotnet-ssh</Company>
+    <Authors>dotnet-ssh</Authors>
   </PropertyGroup>
 
 
