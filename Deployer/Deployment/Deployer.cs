@@ -91,21 +91,39 @@ namespace NetCoreSsh.Deployment
             };
         }
 
-        public static DeploymentUserOptions GetDefaultOptions(string projectPath)
+        public static DeploymentUserOptions GetDefaultOptions(string projectPath, CreateTemplateOptions templateOptions = null)
         {
             var projectName = Path.GetFileNameWithoutExtension(projectPath);
 
+            var userName = templateOptions?.UserName ?? "{username}";
+            var host = templateOptions?.Host ?? "{host}";
+            var runtime = templateOptions != null ? GetRuntime(templateOptions.Target) : null;
+            var password = templateOptions?.Password ?? "{password}";
+
             return new DeploymentUserOptions
             {
-                Destination = "/home/pi/DotNetApps" + "/" + projectName,
-                Host = "raspberrypi",
-                Password = "raspberry",
-                UserName = "pi",
+                Destination = $"/home/{userName}/DotNetApps" + "/" + projectName,
+                Host = host,
+                Password = password,
+                UserName = userName,
                 Framework = Project.GetFramework(projectPath),
                 ProjectName = projectName,
-                Runtime = "linux-arm",
+                Runtime = runtime,
                 Display = ":0.0",
             };
+        }
+
+        private static string GetRuntime(TargetDevice templateOptions)
+        {
+            switch (templateOptions)
+            {
+                case TargetDevice.Raspbian:
+                    return "linux-arm";
+                case TargetDevice.GenericLinux64:
+                    return "linux-x64";
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(templateOptions), templateOptions, null);
+            }
         }
 
         private static DeploymentUserOptions LoadFromFile(string sshDeploymentJson)

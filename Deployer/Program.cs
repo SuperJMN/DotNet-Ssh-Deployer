@@ -24,7 +24,7 @@ namespace NetCoreSsh
         private static int WriteTemplate(CreateTemplateOptions templateOptions)
         {
             var projectFile = Project.GetProjectFilePath();
-            var opts = Deployer.GetDefaultOptions(projectFile);
+            var opts = Deployer.GetDefaultOptions(projectFile, templateOptions);
             File.WriteAllText(OptionsFilename, JsonConvert.SerializeObject(opts, new JsonSerializerSettings
             {
                 Formatting = Formatting.Indented,
