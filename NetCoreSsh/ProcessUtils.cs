@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using Serilog;
 
-namespace NetCoreSsh.Deployment
+namespace DotNetSsh
 {
     public static class ProcessUtils
     {

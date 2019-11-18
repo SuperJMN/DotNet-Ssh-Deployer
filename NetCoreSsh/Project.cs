@@ -3,9 +3,9 @@ using System.IO;
 using System.Linq;
 using System.Xml.XPath;
 
-namespace NetCoreSsh.Deployment
+namespace DotNetSsh
 {
-    internal class Project
+    public class Project
     {
         public static string GetFramework(string project)
         {
@@ -26,7 +26,7 @@ namespace NetCoreSsh.Deployment
             return outputPathNode?.InnerXml;
         }
 
-        private static IEnumerable<string> GetFrameworks(string project)
+        public static IEnumerable<string> GetFrameworks(string project)
         {
             var xml = new XPathDocument(project);
             var nav = xml.CreateNavigator();
@@ -38,7 +38,7 @@ namespace NetCoreSsh.Deployment
 
             var frameworks = nav.SelectSingleNode("/Project/PropertyGroup/TargetFrameworks");
 
-            return frameworks.InnerXml.Split(";");
+            return frameworks.InnerXml.Split(';');
         }
 
         public static string GetProjectFilePath()
