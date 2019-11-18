@@ -10,7 +10,7 @@ namespace DotNetSsh
         private Credentials credentials = new Credentials() { User = "{user}", Password = "{password}"};
         private string projectPath;
         private string framework;
-        private TargetDevice device;
+        private TargetDevice device = TargetDevice.GenericLinux64;
         private bool runAfterDeployment = true;
         private string host = "{host}";
         private string display  = ":0.0";

@@ -1,9 +1,0 @@
-{
-  "profiles": {
-    "Deployer": {
-      "commandName": "Project",
-      "commandLineArgs": "deploy --run",
-      "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
-    }
-  }
-}
