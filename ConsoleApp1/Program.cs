@@ -35,24 +35,37 @@ namespace DotNetSsh.Console
         {
             SetupLogging(verbOptions.Verbose);
 
-            var repo = new DeploymentProfileRepository(ProfileStoreFilename);
-            var profile = repo.Get(verbOptions.Name);
-
+            var projectFile = LookupProjectFile(verbOptions.ProjectFile);
+            var profile = LookupProfile(projectFile, verbOptions.Name);
+            
             var deployer = new SshDeployer();
             var publisher = new ProjectPublisher();
-
-            var project = LookupProjectFile(verbOptions);
-
-            var publishPath = publisher.Publish(project, profile.Options.TargetDevice, profile.Options.Framework);
+            
+            var publishPath = publisher.Publish(projectFile, profile.Options.TargetDevice, profile.Options.Framework);
 
             deployer.Deploy(publishPath, profile.Options);
 
             return 0;
         }
 
-        private static string LookupProjectFile(DeployVerbOptions verbOptions)
+        private static DeploymentProfile LookupProfile(string projectFile, string profileName)
         {
-            var project = verbOptions.ProjectFile ?? Directory
+            var projectDir = Path.GetDirectoryName(projectFile);
+
+            var repo = new DeploymentProfileRepository(Path.Combine(projectDir, ProfileStoreFilename));
+            var profile = repo.Get(profileName);
+
+            if (profile == null)
+            {
+                throw new InvalidOperationException($"Cannot find a profile named {profileName}");
+            }
+
+            return profile;
+        }
+
+        private static string LookupProjectFile(string projectFile)
+        {
+            var project = projectFile ?? Directory
                               .GetFiles(Environment.CurrentDirectory, "*.csproj", SearchOption.AllDirectories)
                               .FirstOrDefault();
 

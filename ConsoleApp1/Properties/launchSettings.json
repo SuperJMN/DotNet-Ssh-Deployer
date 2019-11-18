@@ -2,7 +2,8 @@
   "profiles": {
     "ConsoleApp1": {
       "commandName": "Project",
-      "commandLineArgs": "deploy --name Ubuntu --project \"D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1\\AvaloniaApplication1.csproj\""
+      "commandLineArgs": "deploy --name Ubuntu",
+      "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
     }
   }
 }
