@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Xml.XPath;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     public class Project
     {

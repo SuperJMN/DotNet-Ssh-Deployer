@@ -1,4 +1,4 @@
-﻿namespace NetCoreSsh
+﻿namespace DotNetSsh
 {
     public class Credentials
     {

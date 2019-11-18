@@ -1,7 +1,7 @@
 ﻿using System;
 using Renci.SshNet;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     internal class Clients : IDisposable
     {

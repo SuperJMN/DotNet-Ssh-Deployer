@@ -1,7 +1,6 @@
 ﻿using CommandLine;
-using NetCoreSsh;
 
-namespace ConsoleApp1
+namespace DotNetSsh.Console
 {
     [Verb("create")]
     public class AddVerbOptions
@@ -9,8 +8,8 @@ namespace ConsoleApp1
         [Option("name", Required = true, HelpText = "Profile name")]
         public string Name { get; set; }
 
-        [Option("runtime", Required = true)]
-        public TargetDevice Runtime { get; set; }
+        [Option("target-device", Required = true)]
+        public TargetDevice TargetDevice { get; set; }
 
         [Option('p', "project", Required = false, HelpText = "Project name")]
         public string Project { get; set; }
@@ -23,5 +22,9 @@ namespace ConsoleApp1
 
         [Option('h', "host-name", Required = false, HelpText = "Sets the hostname")]
         public string Host { get; set; }
+
+        [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
+        public bool Verbose { get; set; }
+
     }
 }

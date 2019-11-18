@@ -1,4 +1,7 @@
-﻿namespace NetCoreSsh
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
+
+namespace DotNetSsh
 {
     public class DeploymentOptions
     {
@@ -9,6 +12,7 @@
         public string Framework { get; set; }
         public string Display { get; set; }
         public bool RunAfterDeployment { get; set; }
-        public string Runtime { get; set; }
+        [JsonConverter(typeof(StringEnumConverter))]
+        public TargetDevice TargetDevice { get; set; }
     }
 }

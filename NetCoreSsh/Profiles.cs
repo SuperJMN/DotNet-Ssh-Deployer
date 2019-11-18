@@ -1,6 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     internal class Profiles : Collection<DeploymentProfile>
     {

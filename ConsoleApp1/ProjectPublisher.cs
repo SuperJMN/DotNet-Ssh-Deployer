@@ -1,15 +1,14 @@
 ﻿using System;
 using System.IO;
-using NetCoreSsh;
 using Serilog;
 
-namespace ConsoleApp1
+namespace DotNetSsh.Console
 {
     internal class ProjectPublisher
     {
         private const string Configuration = "Release";
 
-        public static string Publish(string projectPath, TargetDevice device, string framework)
+        public string Publish(string projectPath, TargetDevice device, string framework)
         {
             Log.Information("Building project {Project}...", projectPath);
             var parameters = $@"publish ""{projectPath}"" --configuration {Configuration} -r {GetRuntime(device)} -f {framework}";

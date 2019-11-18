@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace NetCoreSsh
+﻿namespace DotNetSsh
 {
     public interface IDeploymentProfileRepository
     {

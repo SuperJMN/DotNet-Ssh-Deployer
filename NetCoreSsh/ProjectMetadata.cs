@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using System.Xml.XPath;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     public class ProjectMetadata
     {

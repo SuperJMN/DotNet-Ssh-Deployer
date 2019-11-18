@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Net;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     public class DeploymentOptionsBuilder
     {
@@ -11,7 +10,7 @@ namespace NetCoreSsh
         private Credentials credentials = new Credentials() { User = "{user}", Password = "{password}"};
         private string projectPath;
         private string framework;
-        private string runtime;
+        private TargetDevice device;
         private bool runAfterDeployment = true;
         private string host = "{host}";
         private string display  = ":0.0";
@@ -35,7 +34,7 @@ namespace NetCoreSsh
                 AssemblyName = assemblyName,
                 Framework = framework ?? projectMetadata?.Frameworks.FirstOrDefault(),
                 Credentials = credentials,
-                Runtime = runtime,
+                TargetDevice = device,
                 DestinationPath = Destination.Value,
                 RunAfterDeployment = runAfterDeployment,
                 Display = display,
@@ -54,7 +53,7 @@ namespace NetCoreSsh
 
         public DeploymentOptionsBuilder ForDevice(TargetDevice device)
         {
-            runtime = GetRuntime(device);
+            this.device = device;
             return this;
         }
 

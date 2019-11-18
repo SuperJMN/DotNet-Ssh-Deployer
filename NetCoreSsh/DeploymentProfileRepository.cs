@@ -4,7 +4,7 @@ using System.Linq;
 using Newtonsoft.Json;
 using Serilog;
 
-namespace NetCoreSsh
+namespace DotNetSsh
 {
     public class DeploymentProfileRepository : IDeploymentProfileRepository
     {
