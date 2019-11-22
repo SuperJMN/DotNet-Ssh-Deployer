@@ -1,19 +1,17 @@
 ﻿using CommandLine;
-using Serilog;
-using Serilog.Core;
-using Serilog.Events;
+using CommandLine.Text;
 
 namespace DotNetSsh.Console
 {
     class Program
     {
-        private const string ProfileStoreFilename = "deployment.json";
-
         static int Main(string[] args)
         {
             var deployerApp = new DeployerApp();
 
-            return Parser.Default.ParseArguments<AddVerbOptions, DeployVerbOptions>(args)
+            var result = Parser.Default.ParseArguments<AddVerbOptions, DeployVerbOptions>(args);
+
+            return result
                 .MapResult(
                     (AddVerbOptions o) =>
                     {
@@ -24,18 +22,23 @@ namespace DotNetSsh.Console
                     {
                         deployerApp.Deploy(o);
                         return 0;
-                    }, errors => 1);
+                    }, errors =>
+                    {
+                        ShowHelp(result);
+                        return 1;
+                    });
         }
 
-        private static void SetupLogging(bool isVerbose)
+        private static void ShowHelp(ParserResult<object> result)
         {
-            var loggingLevelSwitch = new LoggingLevelSwitch();
-            Log.Logger = new LoggerConfiguration()
-                .WriteTo.Console()
-                .MinimumLevel.ControlledBy(loggingLevelSwitch)
-                .CreateLogger();
+            var helpText = HelpText.AutoBuild(result, h =>
+            {
+                h.AddEnumValuesToHelpText = true;
+                h.AddDashesToOption = true;
+                return h;
+            }, e => e, verbsIndex: true);
 
-            loggingLevelSwitch.MinimumLevel = isVerbose ? LogEventLevel.Verbose : LogEventLevel.Information;
+            System.Console.WriteLine(helpText);
         }
     }
 }

@@ -48,6 +48,11 @@ namespace DotNetSsh
 
         private void Save()
         {
+            if (!File.Exists(filePath))
+            {
+                Log.Verbose($"'{filePath}' doesn't exist and it will be created.");
+            }
+
             File.WriteAllText(filePath, JsonConvert.SerializeObject(profiles));
         }
 

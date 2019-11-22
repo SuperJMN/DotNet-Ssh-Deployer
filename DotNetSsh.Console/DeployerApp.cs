@@ -22,8 +22,9 @@ namespace DotNetSsh.Console
             var publisher = new ProjectPublisher();
 
             var publishPath = publisher.Publish(projectFile, profile.Options.TargetDevice, profile.Options.Framework);
-
             deployer.Deploy(publishPath, profile.Options);
+
+            Log.Information($"Operation finished");
         }
 
         public void AddOrReplaceProfile(AddVerbOptions verbOptions)
@@ -47,11 +48,18 @@ namespace DotNetSsh.Console
 
             var repo = new DeploymentProfileRepository(ProfileStoreFilename);
             repo.Add(new DeploymentProfile(verbOptions.Name, ops));
+
+            Log.Information($"Profile '{verbOptions.Name}' created successfully");
         }
 
         private static DeploymentProfile LookupProfile(string projectFile, string profileName)
         {
             var projectDir = Path.GetDirectoryName(projectFile);
+
+            if (!File.Exists(ProfileStoreFilename))
+            {
+                throw new FileNotFoundException($"Project store file ('{ProfileStoreFilename}') doesn't exist. Please, run this tool with the 'create' verb first.");
+            }
 
             var repo = new DeploymentProfileRepository(Path.Combine(projectDir, ProfileStoreFilename));
             var profile = repo.Get(profileName);

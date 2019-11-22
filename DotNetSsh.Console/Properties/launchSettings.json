@@ -4,6 +4,10 @@
       "commandName": "Project",
       "commandLineArgs": "deploy --name Raspbian",
       "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
+    },
+    "CreateProfile": {
+      "commandName": "Project",
+      "commandLineArgs": "create --name Raspbian --target-device"
     }
   }
 }

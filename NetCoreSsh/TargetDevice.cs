@@ -2,7 +2,6 @@
 {
     public enum TargetDevice
     {
-        Invalid,
         Raspbian,
         GenericLinux64,
     }
