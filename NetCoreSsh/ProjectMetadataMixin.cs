@@ -1,10 +1,15 @@
 ﻿using System.Collections.Generic;
+using System.Xml;
 using System.Xml.XPath;
 
 namespace DotNetSsh
 {
-    public class ProjectMetadataMixin
+    public static class ProjectMetadataMixin
     {
+        private const string TargetFramework = "/Project/PropertyGroup/TargetFramework";
+        private const string TargetFrameworks = "/Project/PropertyGroup/TargetFrameworks";
+        private const string AssemblyName = "/Project/PropertyGroup/AssemblyName";
+
         public static string GetOutputPath(XPathNavigator nav, string configName = "Release|AnyCPU")
         { 
             var xPath =
@@ -15,20 +20,22 @@ namespace DotNetSsh
 
         public static IEnumerable<string> GetFrameworks(XPathNavigator nav)
         {
-            var framework = nav.SelectSingleNode("/Project/PropertyGroup/TargetFramework");
+            var framework = nav.SelectSingleNode(TargetFramework);
             if (framework != null)
             {
                 return new[] { framework.InnerXml };
             }
 
-            var frameworks = nav.SelectSingleNode("/Project/PropertyGroup/TargetFrameworks");
+            var frameworks = nav.SelectSingleNode(TargetFrameworks);
 
-            return frameworks.InnerXml.Split(';');
+            if (frameworks != null) return frameworks.InnerXml.Split(';');
+
+            throw new XmlException("Could not find TargetFramework/s entry in the project definition");
         }
 
-        public static string GetAssemblyName(XPathNavigator nav, string projectPath)
+        public static string GetAssemblyName(XPathNavigator nav)
         {
-            var node = nav.SelectSingleNode("/Project/PropertyGroup/AssemblyName");
+            var node = nav.SelectSingleNode(AssemblyName);
 
             var assemblyName = node?.InnerXml;
             return assemblyName;

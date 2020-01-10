@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
@@ -11,7 +12,7 @@ namespace DotNetSsh.Console
     {
         private const string ProfileStoreFilename = "ssh-deployment.json";
 
-        public void Deploy(DeployVerbOptions verbOptions)
+        public async Task Deploy(DeployVerbOptions verbOptions)
         {
             SetupLogging(verbOptions.Verbose);
 
@@ -22,7 +23,7 @@ namespace DotNetSsh.Console
             var publisher = new ProjectPublisher();
 
             var publishPath = publisher.Publish(projectFile, profile.Options.TargetDevice, profile.Options.Framework);
-            deployer.Deploy(publishPath, profile.Options);
+            await deployer.Deploy(new DirectoryInfo(publishPath), profile.Options, verbOptions.CleanTarget);
 
             Log.Information($"Operation finished");
         }
@@ -30,7 +31,7 @@ namespace DotNetSsh.Console
         public void AddOrReplaceProfile(AddVerbOptions verbOptions)
         {
             SetupLogging(verbOptions.Verbose);
-            
+
             DeploymentOptions ops;
             if (verbOptions.Project != null)
             {

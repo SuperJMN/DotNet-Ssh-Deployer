@@ -36,9 +36,9 @@ namespace DotNetSsh
             return this;
         }
 
-        public DeploymentOptionsBuilder ForDevice(TargetDevice device)
+        public DeploymentOptionsBuilder ForDevice(TargetDevice targetDevice)
         {
-            this.device = device;
+            this.device = targetDevice;
             return this;
         }
     }

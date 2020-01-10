@@ -1,32 +1,34 @@
-﻿using CommandLine;
+﻿using System.Threading.Tasks;
+using CommandLine;
 using CommandLine.Text;
 
 namespace DotNetSsh.Console
 {
     class Program
     {
-        static int Main(string[] args)
+        static async Task<int> Main(string[] args)
         {
             var deployerApp = new DeployerApp();
 
             var result = Parser.Default.ParseArguments<AddVerbOptions, DeployVerbOptions>(args);
 
-            return result
+            var mapResult = await result
                 .MapResult(
                     (AddVerbOptions o) =>
                     {
                         deployerApp.AddOrReplaceProfile(o);
-                        return 0;
-                    }, 
-                    (DeployVerbOptions o) =>
+                        return Task.FromResult(0);
+                    }, async (DeployVerbOptions o) =>
                     {
-                        deployerApp.Deploy(o);
+                        await deployerApp.Deploy(o);
                         return 0;
                     }, errors =>
                     {
                         ShowHelp(result);
-                        return 1;
+                        return Task.FromResult(1);
                     });
+
+            return mapResult;
         }
 
         private static void ShowHelp(ParserResult<object> result)

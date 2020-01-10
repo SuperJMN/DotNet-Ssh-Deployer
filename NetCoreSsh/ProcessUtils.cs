@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Serilog;
 
 namespace DotNetSsh
 {
+    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    [SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
     public static class ProcessUtils
     {
         public static string Run(string command, string arguments)
@@ -24,7 +27,7 @@ namespace DotNetSsh
 
             Log.Verbose("Starting process {@Process}", new { process.StartInfo.FileName, process.StartInfo.Arguments });
             process.Start();
-            Log.Verbose("Process started sucessfully");
+            Log.Verbose("Process started successfully");
             
             string output = process.StandardOutput.ReadToEnd();
             if (!string.IsNullOrWhiteSpace(output))
@@ -48,6 +51,7 @@ namespace DotNetSsh
         public static async Task<int> RunProcessAsync(string fileName, string args = "",
             IObserver<string> outputObserver = null, IObserver<string> errorObserver = null)
         {
+            // ReSharper disable once ConvertToUsingDeclaration
             using (var process = new Process
             {
                 StartInfo =
@@ -80,12 +84,12 @@ namespace DotNetSsh
 
             if (errorObserver != null)
             {
-                process.ErrorDataReceived += (s, ea) => errorObserver?.OnNext(ea.Data);
+                process.ErrorDataReceived += (s, ea) => errorObserver.OnNext(ea.Data);
             }
 
             Log.Verbose("Starting process {@Process}", new { process.StartInfo.FileName, process.StartInfo.Arguments });
             bool started = process.Start();
-            Log.Verbose("Process started sucessfully");
+            Log.Verbose("Process started successfully");
 
             if (!started)
             {

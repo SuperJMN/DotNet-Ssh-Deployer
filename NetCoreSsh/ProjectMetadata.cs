@@ -12,16 +12,16 @@ namespace DotNetSsh
             
             return new ProjectMetadata()
             {
-                AssemblyName = ProjectMetadataMixin.GetAssemblyName(nav, path),
+                AssemblyName = ProjectMetadataMixin.GetAssemblyName(nav),
                 Frameworks = ProjectMetadataMixin.GetFrameworks(nav),
                 OutputPath = ProjectMetadataMixin.GetOutputPath(nav),
             };
         }
 
-        public string OutputPath { get; set; }
+        public string OutputPath { get; private set; }
 
-        public IEnumerable<string> Frameworks { get; set; }
+        public IEnumerable<string> Frameworks { get; private set; }
 
-        public string AssemblyName { get; set; }
+        public string AssemblyName { get; private set; }
     }
 }

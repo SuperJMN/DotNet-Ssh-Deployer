@@ -6,7 +6,7 @@ using Serilog;
 
 namespace DotNetSsh
 {
-    public class DeploymentProfileRepository : IDeploymentProfileRepository
+    public class DeploymentProfileRepository
     {
         private readonly string filePath;
         private readonly Profiles profiles;
@@ -56,6 +56,7 @@ namespace DotNetSsh
             File.WriteAllText(filePath, JsonConvert.SerializeObject(profiles));
         }
 
+        // ReSharper disable once UnusedMember.Global
         public void Delete(DeploymentProfile profile)
         {
             profiles.Remove(profile);

@@ -2,8 +2,8 @@
   "profiles": {
     "ConsoleApp1": {
       "commandName": "Project",
-      "commandLineArgs": "deploy --name Raspbian",
-      "workingDirectory": "D:\\Repos\\AvaloniaApplication1\\AvaloniaApplication1"
+      "commandLineArgs": "deploy --profile Raspbian",
+      "workingDirectory": "D:\\Repos\\AvaloniaApplication2\\AvaloniaApplication2"
     },
     "CreateProfile": {
       "commandName": "Project",
