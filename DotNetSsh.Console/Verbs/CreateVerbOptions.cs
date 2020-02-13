@@ -1,9 +1,9 @@
 ﻿using CommandLine;
 
-namespace DotNetSsh.Console
+namespace DotNetSsh.Console.Verbs
 {
     [Verb("create")]
-    public class AddVerbOptions
+    public class CreateVerbOptions
     {
         [Option("name", Required = true, HelpText = "Profile name")]
         public string Name { get; set; }
@@ -25,6 +25,5 @@ namespace DotNetSsh.Console
 
         [Option('v', "verbose", Required = false, HelpText = "Set output to verbose messages.")]
         public bool Verbose { get; set; }
-
     }
 }

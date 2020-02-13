@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -6,7 +7,7 @@ using Serilog;
 
 namespace DotNetSsh
 {
-    public class DeploymentProfileRepository
+    public class DeploymentProfileRepository : IDeploymentProfileRepository
     {
         private readonly string filePath;
         private readonly Profiles profiles;
@@ -28,10 +29,11 @@ namespace DotNetSsh
                 catch (Exception e)
                 {
                     Log.Error(e, "Couldn't load file {Path}", filePath);
+                    throw;
                 }
             }
 
-            return new Profiles();
+            throw new FileNotFoundException($"Project store file ('{filePath}') doesn't exist. Please, run this tool with the 'create' verb first.");
         }
 
         public void Add(DeploymentProfile profile)
@@ -61,6 +63,11 @@ namespace DotNetSsh
         {
             profiles.Remove(profile);
             Save();
+        }
+
+        public IEnumerable<DeploymentProfile> GetAll()
+        {
+            return profiles;
         }
 
         public DeploymentProfile Get(string name)

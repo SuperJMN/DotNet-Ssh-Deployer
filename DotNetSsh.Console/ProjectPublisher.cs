@@ -6,22 +6,21 @@ namespace DotNetSsh.Console
 {
     internal class ProjectPublisher
     {
-        private const string Configuration = "Release";
-
-        public string Publish(string projectPath, TargetDevice device, string framework)
+        public string Publish(string projectPath, TargetDevice device, string framework, string configuration)
         {
-            Log.Information("Building project {Project}...", projectPath);
-            var parameters = $@"publish ""{projectPath}"" --configuration {Configuration} -r {GetRuntime(device)} -f {framework}";
+            var publishPath = GetPublishPath(projectPath, device, framework, configuration);
+            Log.Information("Publishing project {Project} for {TargetDevice} to path {Path}...", projectPath, device, publishPath);
+            var parameters = $@"publish ""{projectPath}"" --configuration {configuration} -r {GetRuntime(device)} -f {framework}";
             var cmd = "dotnet";
             ProcessUtils.Run(cmd, parameters);
-
-            return GetPublishPath(projectPath, device, framework);
+            
+            return publishPath;
         }
 
-        private static string GetPublishPath(string pathToProject, TargetDevice device, string framework)
+        private static string GetPublishPath(string pathToProject, TargetDevice device, string framework, string configuration)
         {
             var metadata = ProjectMetadata.FromPath(pathToProject);
-            var implicitPath = Path.Combine("bin", Configuration, framework);
+            var implicitPath = Path.Combine("bin", configuration, framework);
             var outputPath = metadata.OutputPath ?? implicitPath;
 
             return Path.Combine(Path.GetDirectoryName(pathToProject), outputPath, GetRuntime(device), "publish");

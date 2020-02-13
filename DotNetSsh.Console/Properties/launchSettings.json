@@ -1,13 +1,14 @@
 {
   "profiles": {
-    "ConsoleApp1": {
+    "Configure LaunchSettings": {
       "commandName": "Project",
-      "commandLineArgs": "deploy --profile Raspbian",
-      "workingDirectory": "D:\\Repos\\AvaloniaApplication2\\AvaloniaApplication2"
+      "commandLineArgs": "configure --verbose",
+      "workingDirectory": "D:\\Repos\\SuperJMN-Zafiro\\AvaloniaDesigner\\AvaloniaDesigner"
     },
-    "CreateProfile": {
+    "Deploy": {
       "commandName": "Project",
-      "commandLineArgs": "create --name Raspbian --target-device"
+      "commandLineArgs": "deploy --verbose",
+      "workingDirectory": "D:\\Repos\\SuperJMN-Zafiro\\AvaloniaDesigner\\AvaloniaDesigner"
     }
   }
 }

@@ -1,6 +1,8 @@
 ﻿using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
+using DotNetSsh.Console.Verbs;
+using Grace.DependencyInjection;
 
 namespace DotNetSsh.Console
 {
@@ -8,13 +10,19 @@ namespace DotNetSsh.Console
     {
         static async Task<int> Main(string[] args)
         {
-            var deployerApp = new DeployerApp();
+            var container = new DependencyInjectionContainer();
+            container.Configure(c =>
+            {
+                c.Export<DeploymentProfileRepository>().As<IDeploymentProfileRepository>();
+            });
 
-            var result = Parser.Default.ParseArguments<AddVerbOptions, DeployVerbOptions>(args);
+            var deployerApp = container.Locate<DeployerApp>();
+
+            var result = Parser.Default.ParseArguments<CreateVerbOptions, DeployVerbOptions, ConfigureVerbOptions>(args);
 
             var mapResult = await result
                 .MapResult(
-                    (AddVerbOptions o) =>
+                    (CreateVerbOptions o) =>
                     {
                         deployerApp.AddOrReplaceProfile(o);
                         return Task.FromResult(0);
@@ -22,7 +30,12 @@ namespace DotNetSsh.Console
                     {
                         await deployerApp.Deploy(o);
                         return 0;
-                    }, errors =>
+                    }, async (ConfigureVerbOptions o) =>
+                    {
+                        await deployerApp.ConfigureLaunchSettings(o);
+                        return 0;
+                    }
+                    , errors =>
                     {
                         ShowHelp(result);
                         return Task.FromResult(1);
