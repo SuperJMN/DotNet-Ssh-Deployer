@@ -14,7 +14,7 @@ This will help you deploy your NET Core applications (Console or ASP.NET) to Ras
 - You're ready to go!
 
 # How do I deploy my application?
-Follow these easy steps :) It's super easy to do it!
+Follow these steps :) It's super easy to do it!
 
 ## 1. Configure a deployment profile
 
