@@ -46,7 +46,9 @@ The **classic method** of authentication writes your login information in `launc
 
 ## 2. Deploy your application
 
-1. After you've configured the profile, go to Visual Studio and open the project you want to deploy. In the launch settings dropdown you'll see that your profile has been added. Select it if it's being selected automatically.
+1. After you've configured the profile, go to Visual Studio and open the solution you want to deploy. 
+2. Set the project you want to deploy as startup project. 
+3. In the launch settings dropdown (the one that is pointed by an arrow in the snapshop below) you'll see that your profile has been added. In case it hasn't been selected automatically, select it manually.
 ![Vs Menu Snapshot](Docs/Vs-Menu-Snapshot.png)
 2. Run the app by clicking on the **play button** or pressing **F5**
 3. Your application should be deployed to the remote system. The application will also be executed if you have configured to do so. This is enabled by default.
