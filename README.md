@@ -2,6 +2,8 @@
 Deploy your .NET Project to Raspberry Pi / Linux x64 with ease!
 This will help you deploy your NET Core applications (Console or ASP.NET) to Raspbian or other Linux distro in the blink of an eye. 
 
+![Demo](Docs/Demo.gif)
+
 # Requirements
 
 - Linux device: Currently supported Raspberry Pi (Linux ARM) and generic Linux x64 distros.
