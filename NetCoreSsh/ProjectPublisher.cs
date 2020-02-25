@@ -2,11 +2,11 @@
 using System.IO;
 using Serilog;
 
-namespace DotNetSsh.Console
+namespace DotNetSsh
 {
-    internal class ProjectPublisher
+    public class ProjectPublisher : IProjectPublisher
     {
-        public string Publish(string projectPath, TargetDevice device, string framework, string configuration)
+        public DirectoryInfo Publish(string projectPath, TargetDevice device, string framework, string configuration)
         {
             var publishPath = GetPublishPath(projectPath, device, framework, configuration);
             Log.Information("Publishing project {Project} for {TargetDevice} to path {Path}...", projectPath, device, publishPath);
@@ -17,13 +17,13 @@ namespace DotNetSsh.Console
             return publishPath;
         }
 
-        private static string GetPublishPath(string pathToProject, TargetDevice device, string framework, string configuration)
+        private static DirectoryInfo GetPublishPath(string pathToProject, TargetDevice device, string framework, string configuration)
         {
             var metadata = ProjectMetadata.FromPath(pathToProject);
             var implicitPath = Path.Combine("bin", configuration, framework);
             var outputPath = metadata.OutputPath ?? implicitPath;
 
-            return Path.Combine(Path.GetDirectoryName(pathToProject), outputPath, GetRuntime(device), "publish");
+            return new DirectoryInfo(Path.Combine(Path.GetDirectoryName(pathToProject), outputPath, GetRuntime(device), "publish"));
         }
 
         private static string GetRuntime(TargetDevice templateOptions)

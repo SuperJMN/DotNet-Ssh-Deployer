@@ -5,9 +5,14 @@ VisualStudioVersion = 16.0.29503.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSsh", "NetCoreSsh\DotNetSsh.csproj", "{EE4B5DF0-135F-46C4-BFBD-47DD8159B412}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSsh.Console", "DotNetSsh.Console\DotNetSsh.Console.csproj", "{F9FEF2D3-205E-4769-85D0-C2B78514C5C5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSsh.App", "DotNetSsh.Console\DotNetSsh.App.csproj", "{F9FEF2D3-205E-4769-85D0-C2B78514C5C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DotNetSsh.Tests", "DotNetSsh.Tests\DotNetSsh.Tests.csproj", "{CE92742A-25D6-49F7-92AB-2BB841D9A5A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DotNetSsh.Tests", "DotNetSsh.Tests\DotNetSsh.Tests.csproj", "{CE92742A-25D6-49F7-92AB-2BB841D9A5A8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F1EA1312-9F4D-4F84-AF30-68F54FA4E708}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

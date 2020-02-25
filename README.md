@@ -5,46 +5,54 @@ This will help you deploy your NET Core applications (Console or ASP.NET) to Ras
 # Requirements
 
 - Linux device: Currently supported Raspberry Pi (Linux ARM) and generic Linux x64 distros.
-- [.NET Core 3.0](https://www.microsoft.com/net/download)
-- SSH enabled on your target machine (Raspberry / Linux)
+- [.NET Core 3.0+](https://www.microsoft.com/net/download)
+- SSH enabled on your target machine
 
 # Installation
 - Open a command prompt
-- Run `dotnet tool install --global dotnet-ssh --version 2.0.0`
+- Run `dotnet tool install --global dotnet-ssh`
 - You're ready to go!
 
-# How to deploy your application?
+# How do I deploy my application?
+Follow these easy steps :) It's super easy to do it!
 
-## 1. Create a profile
+## 1. Configure a deployment profile
 
-Currently, you need to create a deployment profile with all the data required for the deployments.
+You need to configure a deployment profile first:
 
-1.  Go to the root directory of the project you want to deploy
-    1. Run the appropriate command    
-        1. For a Raspberry Pi: `dotnet-ssh create --name MyRaspberry --target-device Raspbian`
-        2. For a generic Linux x64 machine: `dotnet-ssh create --name Ubuntu --target-device GenericLinux64`
-    
-		This will create a template inside the folder named **shh-deployment.json**
-2. Edit this file and fill it with your parameters. You will want to set the host, the credentials, username, destination path...
+1. Go to the root directory of the project you want to deploy
+2. Run this command depending on the authentication method you want to use to access the remote machine. **User Secrets is recommended**.
 
-	Take this screeenshot as reference. It contains 2 different profiles, one for Raspberry Pi and another for my Ubuntu machine.
+* ### User Secrets
+```
+dotnet-ssh configure MyRaspberryPi --auth-type UserSecrets --auth username:password
+```
+This authentication method will use User Secrets to store your login in a safe storage inside your computer.
 
-![Ssh Deployment Json](Docs/Ssh-Deployment-Json.png)
+* ### Private SSH key (experts-only 😁)
+```
+dotnet-ssh configure MyRaspberryPi --auth-type PrivateKeyFile --auth username:pathToPrivateKeyFile
+```
+This authentication method uses a private SSH key file. You can generate one with [PuTTY](https://stackoverflow.com/a/2224204/1025407) or inside your GNU Linux using the [ssh-keygen](https://www.ssh.com/ssh/keygen) tool.
 
-3. After you've finished, save the file.
+* ### Classic (unsafe)
+```
+dotnet-ssh configure MyRaspberryPi --auth-type Classic --auth username:password
+```
+#### WARNING: 
+The method of authentication writes your login information in launchsettings.json, that is inside your project folder. Please, use it with caution. If you share the solution or push it to an online repository, your credentials will be publicly visible.
 
 ## 2. Deploy your application
 
-After you have configured **ssh-deployment.json** you just need to run the tool using this command
-```
-dotnet-ssh deploy --name MyRaspberry 
-```
+1. After you've configured the profile, go to Visual Studio and open the project you want to deploy. In the launch settings dropdown you'll see that your profile has been added. Select it if it's being selected automatically.
+![Vs Menu Snapshot](Docs/Vs-Menu-Snapshot.png)
+2. Run the app by clicking on the **play button** or pressing **F5**
+3. Your application should be deployed to the remote system. The application will also be executed if you have configured to do so. This is enabled by default.
 
-Please, notice that the `--name` argument provides the profile that you want to use. It will take all the information in it to perform the deployment
+# Requirements for the remote machine
+Before you run the application, you must ensure your remote device has the appropriate version of the .NET Core runtime installed.
 
-# Running your application in the target device
-You should install .NET Core into your target device! 
-
+For convenience, I've added the instructions to install v2.1 for Raspbian.
 ## Installing .NET Core 2.1 for Raspbian
 
 Execute the following commands inside a terminal
@@ -59,10 +67,6 @@ sudo tar -xvf aspnetcore-runtime-2.1.0-linux-arm.tar.gz -C /opt/dotnet/
 sudo ln -s /opt/dotnet/dotnet /usr/local/bin
 dotnet --info
 ```
-3. Go to the directory where you deployed you application
-4. Run it by using `./[NameOfYourApp]`, for example `./HelloWorld`. If you don't know the name, just type `ls` and look for the file with no extension in a different color (non-executable files are usually in light gray text)
-
-Easy enough? Try it and freak it out!
 
 ## Installing .NET Core in other Linux distros
 

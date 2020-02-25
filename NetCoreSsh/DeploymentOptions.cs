@@ -1,18 +1,13 @@
-﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
-
-namespace DotNetSsh
+﻿namespace DotNetSsh
 {
     public class DeploymentOptions
     {
-        public string DestinationPath { get; set; }
-        public Credentials Credentials { get; set; }
-        public string Host { get; set; }
-        public string AssemblyName { get; set; }
-        public string Framework { get; set; }
-        public string Display { get; set; }
-        public bool RunAfterDeployment { get; set; }
-        [JsonConverter(typeof(StringEnumConverter))]
-        public TargetDevice TargetDevice { get; set; }
+        public string Project { get; set; }
+        public bool CleanDeploymentDestination { get; set; }
+        public string Configuration { get; set; }
+        public AuthType AuthType { get; set; }
+        public string Auth { get; set; }
+        public string Profile { get; set; }
+        public bool Verbose { get; set; }
     }
 }

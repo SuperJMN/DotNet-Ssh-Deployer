@@ -9,6 +9,7 @@ namespace DotNetSsh
         private const string TargetFramework = "/Project/PropertyGroup/TargetFramework";
         private const string TargetFrameworks = "/Project/PropertyGroup/TargetFrameworks";
         private const string AssemblyName = "/Project/PropertyGroup/AssemblyName";
+        private const string UserSecretsId = "/Project/PropertyGroup/UserSecretsId";
 
         public static string GetOutputPath(XPathNavigator nav, string configName = "Release|AnyCPU")
         { 
@@ -36,6 +37,14 @@ namespace DotNetSsh
         public static string GetAssemblyName(XPathNavigator nav)
         {
             var node = nav.SelectSingleNode(AssemblyName);
+
+            var assemblyName = node?.InnerXml;
+            return assemblyName;
+        }
+
+        public static string GetUserSecretsId(XPathNavigator nav)
+        {
+            var node = nav.SelectSingleNode(UserSecretsId);
 
             var assemblyName = node?.InnerXml;
             return assemblyName;

@@ -4,8 +4,8 @@ namespace DotNetSsh
 {
     public interface IDeploymentProfileRepository
     {
-        void Add(DeploymentProfile profile);
-        void Delete(DeploymentProfile profile);
+        void AddOrUpdate(DeploymentProfile profile);
+        void Delete(string name);
         IEnumerable<DeploymentProfile> GetAll();
         DeploymentProfile Get(string name);
     }

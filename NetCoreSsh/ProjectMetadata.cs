@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.IO;
 using System.Xml.XPath;
 
 namespace DotNetSsh
@@ -9,14 +10,21 @@ namespace DotNetSsh
         {
             var xml = new XPathDocument(path);
             var nav = xml.CreateNavigator();
-            
+
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
             return new ProjectMetadata()
             {
-                AssemblyName = ProjectMetadataMixin.GetAssemblyName(nav),
+                ProjectName = fileNameWithoutExtension,
+                AssemblyName = ProjectMetadataMixin.GetAssemblyName(nav) ?? fileNameWithoutExtension,
                 Frameworks = ProjectMetadataMixin.GetFrameworks(nav),
                 OutputPath = ProjectMetadataMixin.GetOutputPath(nav),
+                UserSecretsId = ProjectMetadataMixin.GetUserSecretsId(nav),
             };
         }
+
+        public string ProjectName { get; set; }
+
+        public string UserSecretsId { get; set; }
 
         public string OutputPath { get; private set; }
 

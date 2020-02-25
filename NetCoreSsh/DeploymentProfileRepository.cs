@@ -1,78 +1,77 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using Serilog;
 
 namespace DotNetSsh
 {
     public class DeploymentProfileRepository : IDeploymentProfileRepository
     {
-        private readonly string filePath;
-        private readonly Profiles profiles;
+        private const string ProfileStoreFilename = "ssh-deployment.json";
 
-        public DeploymentProfileRepository(string filePath)
+        private readonly string storeFile;
+        private readonly IDictionary<string, CustomizableSettings> dict;
+        private readonly JsonSerializerSettings jsonSerializerSettings;
+
+        private IEnumerable<DeploymentProfile> Profiles => dict.Select(x => new DeploymentProfile(x.Key, x.Value));
+
+        public DeploymentProfileRepository(string projectFile)
         {
-            this.filePath = filePath;
-            profiles = Load();
+            storeFile = Path.Combine(Path.GetDirectoryName(projectFile), ProfileStoreFilename);
+            dict = GetDict();
+
+            jsonSerializerSettings = new JsonSerializerSettings()
+            {
+                Formatting = Formatting.Indented
+            };
+
+            jsonSerializerSettings.Converters.Add(new StringEnumConverter());
         }
 
-        private Profiles Load()
+        private IDictionary<string, CustomizableSettings> GetDict()
         {
-            if (File.Exists(filePath))
+            if (File.Exists(storeFile))
             {
-                try
-                {
-                    return JsonConvert.DeserializeObject<Profiles>(File.ReadAllText(filePath));
-                }
-                catch (Exception e)
-                {
-                    Log.Error(e, "Couldn't load file {Path}", filePath);
-                    throw;
-                }
+                var p = JsonConvert.DeserializeObject<Profiles>(File.ReadAllText(storeFile), jsonSerializerSettings);
+                return p.ToDictionary(x => x.Name, x => x.Settings);
             }
 
-            throw new FileNotFoundException($"Project store file ('{filePath}') doesn't exist. Please, run this tool with the 'create' verb first.");
+            return new Dictionary<string, CustomizableSettings>();
         }
 
-        public void Add(DeploymentProfile profile)
+        public void AddOrUpdate(DeploymentProfile profile)
         {
-            var existing = profiles.FirstOrDefault(x => x.Name == profile.Name);
-            if (existing != null)
-            {
-                profiles.Remove(existing);
-            }
-
-            profiles.Add(profile);
+            dict[profile.Name] = profile.Settings;
             Save();
         }
 
         private void Save()
         {
-            if (!File.Exists(filePath))
+            if (!File.Exists(storeFile))
             {
-                Log.Verbose($"'{filePath}' doesn't exist and it will be created.");
+                Log.Verbose($"'{storeFile}' doesn't exist and it will be created.");
             }
-
-            File.WriteAllText(filePath, JsonConvert.SerializeObject(profiles));
+            
+            File.WriteAllText(storeFile, JsonConvert.SerializeObject(Profiles, jsonSerializerSettings));
         }
 
         // ReSharper disable once UnusedMember.Global
-        public void Delete(DeploymentProfile profile)
+        public void Delete(string name)
         {
-            profiles.Remove(profile);
+            dict.Remove(name);
             Save();
         }
 
         public IEnumerable<DeploymentProfile> GetAll()
         {
-            return profiles;
+            return Profiles;
         }
 
         public DeploymentProfile Get(string name)
         {
-            var existing = profiles.FirstOrDefault(x => x.Name == name);
+            var existing = Profiles.FirstOrDefault(x => x.Name == name);
             return existing;
         }
     }

@@ -3,12 +3,12 @@
     public class DeploymentProfile
     {
         public string Name { get; }
-        public DeploymentOptions Options { get; }
+        public CustomizableSettings Settings { get; }
 
-        public DeploymentProfile(string name, DeploymentOptions options)
+        public DeploymentProfile(string name, CustomizableSettings settings)
         {
             Name = name;
-            Options = options;
+            Settings = settings;
         }
     }
 }
