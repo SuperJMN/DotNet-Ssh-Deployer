@@ -21,7 +21,7 @@ Follow these easy steps :) It's super easy to do it!
 You need to configure a deployment profile first:
 
 1. Go to the root directory of the project you want to deploy
-2. Run this command depending on the authentication method you want to use to access the remote machine. **User Secrets is recommended**.
+2. Run this command depending on the authentication method you want to use to access the remote machine. **The "User Secrets" method is recommended**.
 
 * ### User Secrets
 ```
@@ -33,14 +33,14 @@ This authentication method will use User Secrets to store your login in a safe s
 ```
 dotnet-ssh configure MyRaspberryPi --auth-type PrivateKeyFile --auth username:pathToPrivateKeyFile
 ```
-This authentication method uses a private SSH key file. You can generate one with [PuTTY](https://stackoverflow.com/a/2224204/1025407) or inside your GNU Linux using the [ssh-keygen](https://www.ssh.com/ssh/keygen) tool.
+This authentication method uses a private SSH key file. You can generate one with [PuTTY](https://stackoverflow.com/a/2224204/1025407) or inside your GNU Linux distro using the [ssh-keygen](https://www.ssh.com/ssh/keygen) tool.
 
 * ### Classic (unsafe)
 ```
 dotnet-ssh configure MyRaspberryPi --auth-type Classic --auth username:password
 ```
 #### WARNING: 
-The method of authentication writes your login information in launchsettings.json, that is inside your project folder. Please, use it with caution. If you share the solution or push it to an online repository, your credentials will be publicly visible.
+The **classic method** of authentication writes your login information in `launchsettings.json`, that is inside your project folder. Please, use it with caution. If you share the solution or push it to an online repository, your credentials will be publicly visible.
 
 ## 2. Deploy your application
 
