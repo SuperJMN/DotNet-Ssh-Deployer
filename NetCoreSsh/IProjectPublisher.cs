@@ -4,6 +4,6 @@ namespace DotNetSsh
 {
     public interface IProjectPublisher
     {
-        DirectoryInfo Publish(string projectPath, TargetDevice device, string framework, string configuration);
+        DirectoryInfo Publish(string projectPath, string device, string framework, string configuration);
     }
 }
