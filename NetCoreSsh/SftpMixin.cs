@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using Renci.SshNet;
 using Serilog;
 
@@ -21,15 +23,27 @@ namespace DotNetSsh
             }
         }
 
-        public static void CreateDirectory(this SftpClient clientsSshClient, string destinationPath)
+        public static void CreateDirectory(this SftpClient sftp, string destinationPath)
         {
-            if (clientsSshClient.Exists(destinationPath))
+            var abstractPath = new AbstractPath(destinationPath);
+            Log.Verbose("Creating destination directory {Directory}", destinationPath);
+            CreateDirectory(sftp, abstractPath);
+        }
+
+        private static void CreateDirectory(SftpClient sftp, AbstractPath directory)
+        {
+            if (directory.FullName == "")
             {
                 return;
             }
 
-            Log.Verbose("Creating destination directory {Directory}", destinationPath);
-            clientsSshClient.CreateDirectory(destinationPath);
+            if (sftp.Exists(directory.SlashPath))
+            {
+                return;
+            }
+
+            CreateDirectory(sftp, directory.Parent);
+            sftp.CreateDirectory(directory.SlashPath);
         }
 
         public static void DeleteExisting(this SshClient sshClient, string path)
@@ -38,5 +52,22 @@ namespace DotNetSsh
 
             sshClient.RunCommand($"rm -rf {path}");
         }
+    }
+
+    public class AbstractPath
+    {
+        private const string Backslash = "\\";
+        private const string Slash = "/";
+        private readonly string path;
+
+        public AbstractPath(string path)
+        {
+            this.path = path.Replace("/", Backslash);
+        }
+
+        public IList<string> Parts => path.Split(Backslash);
+        public AbstractPath Parent => new(string.Join(Backslash, Parts.SkipLast(1)));
+        public string FullName => string.Join(Backslash, Parts);
+        public string SlashPath => string.Join(Slash, Parts);
     }
 }
