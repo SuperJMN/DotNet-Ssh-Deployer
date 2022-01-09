@@ -47,6 +47,32 @@ namespace DotNetSsh
             return output;
         }
 
+        public static string RunSilently(string command, string arguments)
+        {
+            var process = new Process
+            {
+                StartInfo =
+                {
+                    FileName = command,
+                    Arguments = arguments,
+                    UseShellExecute = false,
+                    RedirectStandardOutput = true,
+                    RedirectStandardError = false,
+                    CreateNoWindow = true,                                        
+                }
+            };
+
+            Log.Verbose("Starting process {@Process}", new { process.StartInfo.FileName, process.StartInfo.Arguments });
+            process.Start();
+            Log.Verbose("Process started successfully");
+            
+            string output = process.StandardOutput.ReadToEnd();
+           
+            process.WaitForExit();
+            Log.Verbose("Process output {Output}", output);
+            return output;
+        }
+
 
         public static async Task<int> RunProcessAsync(string fileName, string args = "",
             IObserver<string> outputObserver = null, IObserver<string> errorObserver = null)

@@ -17,7 +17,7 @@ namespace DotNetSsh
         public async Task Deploy(Deployment settings)
         {
             Log.Information("Operation started");
-            var publishDirectory = publisher.Publish(settings.ProjectPath, settings.Settings.TargetDevice, settings.Settings.Framework,
+            var publishDirectory = publisher.Publish(settings.ProjectPath, settings.Settings.Architecture, settings.Settings.Framework,
                 settings.BuildConfiguration);
             await deployer.Deploy(publishDirectory, settings);
             Log.Information("Operation finished");

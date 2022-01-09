@@ -27,7 +27,7 @@ namespace DotNetSsh.UserSecrets
 
         public List<string> List()
         {
-            var result = ProcessUtils.Run("dotnet", @$"user-secrets list {Project}");
+            var result = ProcessUtils.RunSilently("dotnet", @$"user-secrets list {Project}");
             return new List<string>(result.Split(Environment.NewLine, StringSplitOptions.RemoveEmptyEntries));
         }
 

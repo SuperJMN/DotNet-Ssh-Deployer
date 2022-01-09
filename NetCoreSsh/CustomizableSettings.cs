@@ -8,6 +8,6 @@
         public string Framework { get; set; }
         public string Display { get; set; }
         public bool RunAfterDeployment { get; set; }
-        public TargetDevice TargetDevice { get; set; }
+        public Architecture Architecture { get; set; }
     }
 }

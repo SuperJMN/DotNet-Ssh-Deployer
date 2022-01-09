@@ -163,7 +163,7 @@ namespace DotNetSsh
                 case AuthType.PrivateKeyFile:
                     return profileCreationOptions.Auth.Split(":").First();
                 case AuthType.UserSecrets:
-                    return null;
+                    return profileCreationOptions.Auth.Split(":").First();
                 default:
                     throw new ArgumentOutOfRangeException();
             }
