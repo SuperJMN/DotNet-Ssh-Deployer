@@ -1,9 +1,10 @@
 ﻿using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 
 namespace DotNetSsh
 {
     public interface IFullDeployer
     {
-        Task Deploy(Deployment settings);
+        Task<Result> Deploy(Deployment settings);
     }
 }

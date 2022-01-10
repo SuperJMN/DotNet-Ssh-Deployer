@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="ByteSize" Version="2.1.1" />
+    <PackageReference Include="CSharpFunctionalExtensions" Version="2.27.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     <PackageReference Include="Serilog.Sinks.Console" Version="4.0.1" />

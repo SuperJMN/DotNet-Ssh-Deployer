@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Serilog;
 
 namespace DotNetSsh
@@ -10,7 +11,7 @@ namespace DotNetSsh
     [SuppressMessage("ReSharper", "UnusedMethodReturnValue.Global")]
     public static class ProcessUtils
     {
-        public static string Run(string command, string arguments)
+        public static Result<string> Run(string command, string arguments)
         {
             var process = new Process
             {
@@ -44,7 +45,8 @@ namespace DotNetSsh
 
             Log.Verbose("Process output {Output}", output);
 
-            return output;
+            var errorMessage = err != string.Empty ? err : output;
+            return Result.FailureIf(() => process.ExitCode != 0, output, $"Process failed: {errorMessage}");
         }
 
         public static string RunSilently(string command, string arguments)

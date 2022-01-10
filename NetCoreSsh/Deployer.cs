@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Renci.SshNet;
 using Serilog;
 
@@ -15,7 +16,7 @@ namespace DotNetSsh
             this.secureSession = secureSession;
         }
 
-        public async Task Deploy(DirectoryInfo source, Deployment settings)
+        public async Task<Result> Deploy(DirectoryInfo source, Deployment settings)
         {
             try
             {
@@ -28,8 +29,10 @@ namespace DotNetSsh
             }
             catch (Exception e)
             {
-                throw new DeploymentException("Deployment failed", e);
+                return Result.Failure($"Deployment failed: {e.Message}");
             }
+
+            return Result.Success();
         }
 
         private static void RunIfSelected(Deployment settings, SshClient ssh)

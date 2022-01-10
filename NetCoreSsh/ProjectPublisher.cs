@@ -1,20 +1,22 @@
 ﻿using System;
 using System.IO;
+using CSharpFunctionalExtensions;
 using Serilog;
 
 namespace DotNetSsh
 {
     public class ProjectPublisher : IProjectPublisher
     {
-        public DirectoryInfo Publish(string projectPath, Architecture device, string framework, string configuration)
+        public Result<DirectoryInfo> Publish(string projectPath, Architecture device, string framework,
+            string configuration)
         {
             var publishPath = GetPublishPath(projectPath, device, framework, configuration);
             Log.Information("Publishing project {Project} with runtime {Architecture} to path {Path}...", projectPath, device, publishPath);
             var parameters = $@"publish ""{projectPath}"" --configuration {configuration} -r {GetRuntime(device)} -f {framework}";
             var cmd = "dotnet";
-            ProcessUtils.Run(cmd, parameters);
-            
-            return publishPath;
+            var runResult = ProcessUtils.Run(cmd, parameters);
+
+            return runResult.Map(s => publishPath);
         }
 
         private static DirectoryInfo GetPublishPath(string pathToProject, Architecture device, string framework, string configuration)

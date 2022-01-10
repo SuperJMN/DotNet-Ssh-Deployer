@@ -5,6 +5,7 @@ using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using Grace.DependencyInjection;
+using Serilog;
 
 namespace DotNetSsh.App
 {
@@ -62,10 +63,14 @@ namespace DotNetSsh.App
                 verbose
             };
 
-            deployCommand.Handler = CommandHandler.Create<DeploymentOptions>(options =>
+            deployCommand.Handler = CommandHandler.Create<DeploymentOptions>(async options =>
             {
-                var creator = container.Locate<DeploymentUnit>(options);
-                return creator.Deploy();
+                var deploymentRequest = container.Locate<DeploymentUnit>(options);
+                var deploy = await deploymentRequest.Deploy();
+                if (deploy.IsFailure)
+                {
+                    Log.Error($"Deployment failed {deploy.Error}");
+                }
             });
 
             builder.AddCommand(configureCommand);

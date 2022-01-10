@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 
 namespace DotNetSsh
 {
@@ -13,7 +14,7 @@ namespace DotNetSsh
             this.deployment = deployment;
         }
 
-        public Task Deploy()
+        public Task<Result> Deploy()
         {
             return deployer.Deploy(deployment);
         }

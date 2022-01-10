@@ -1,10 +1,11 @@
 ﻿using System.IO;
 using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 
 namespace DotNetSsh
 {
     public interface IDeployer
     {
-        Task Deploy(DirectoryInfo source, Deployment settings);
+        Task<Result> Deploy(DirectoryInfo source, Deployment settings);
     }
 }

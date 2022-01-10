@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CSharpFunctionalExtensions;
 using Serilog;
 
 namespace DotNetSsh
@@ -14,13 +15,12 @@ namespace DotNetSsh
             this.publisher = publisher;
         }
 
-        public async Task Deploy(Deployment settings)
+        public async Task<Result> Deploy(Deployment settings)
         {
             Log.Information("Operation started");
             var publishDirectory = publisher.Publish(settings.ProjectPath, settings.Settings.Architecture, settings.Settings.Framework,
                 settings.BuildConfiguration);
-            await deployer.Deploy(publishDirectory, settings);
-            Log.Information("Operation finished");
+            return await publishDirectory.Bind(dir => deployer.Deploy(dir, settings));
         }
     }
 }
