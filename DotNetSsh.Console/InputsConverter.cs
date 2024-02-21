@@ -24,13 +24,42 @@ namespace DotNetSsh.App
             throw new ArgumentOutOfRangeException($"Authorization for authorization type '{options.AuthType}' cannot be parsed. It should be a string in the form of {Sample(options.AuthType)}");
         }
 
+        public static CredentialsManager ToCredentialManager(Func<string, IUserSecretsManager> userSecretsManagerFactory, Deployment options)
+        {
+            ValidateAuth(options.AuthType, options.Auth);
+
+            switch (options.AuthType)
+            {
+                case AuthType.Classic:
+                    var split = options.Auth.Split(":");
+                    var username = split[0];
+                    var password = split[1];
+                    return new CredentialsManager()
+                    {
+                        UserName = username,
+                        Password = password
+                    };
+                case AuthType.PrivateKeyFile:
+                    return new CredentialsManager();
+                case AuthType.UserSecrets:
+                    var secrets = UserSecretsUtils.FromSecrets(userSecretsManagerFactory(options.ProjectPath));
+                    var secret = secrets.First(profile => string.Equals(options.Profile.Name, profile.Name));
+                    return new CredentialsManager()
+                    {
+                        UserName = secret.Credentials.Username,
+                        Password = secret.Credentials.Password
+                    };
+            }
+
+            throw new ArgumentOutOfRangeException($"Authorization for authorization type '{options.AuthType}' cannot be parsed. It should be a string in the form of {Sample(options.AuthType)}");
+        }
+
         private static string Sample(AuthType authType)
         {
             switch (authType)
             {
                 case AuthType.Classic:
                 case AuthType.UserSecrets:
-
                     return "username:password";
                 case AuthType.PrivateKeyFile:
                     return "username:private_key_file_path, e.g. user:\"C:\\Keys\\MyKey.key\"";
