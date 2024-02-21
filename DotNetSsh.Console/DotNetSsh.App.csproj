@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>dotnet-ssh</AssemblyName>
     <Authors>SuperJMN (José Manuel Nieto)</Authors>
     <Company />
     <Product />
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>3.1.0</Version>
+    <Version>3.2.0</Version>
     <Description>This tool deploys your application to a remote computer (usually a Linux device, like a Raspberry Pi)</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <RepositoryUrl>https://github.com/SuperJMN/DotNet-Ssh-Deployer</RepositoryUrl>
@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <PackageReference Include="Grace" Version="7.2.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
     <PackageReference Include="System.CommandLine" Version="2.0.0-beta1.20104.2" />
   </ItemGroup>
 

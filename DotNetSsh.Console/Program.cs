@@ -1,6 +1,7 @@
 ﻿using System;
 using System.CommandLine.Builder;
 using System.CommandLine.Parsing;
+using System.IO;
 using System.Threading.Tasks;
 using DotNetSsh.UserSecrets;
 using Grace.DependencyInjection;
@@ -45,13 +46,14 @@ namespace DotNetSsh.App
                 c.Export<FullDeployer>().As<IFullDeployer>();
                 c.Export<ProfileWizard>().As<IProfileWizard>();
                 c.Export<ProjectPublisher>().As<IProjectPublisher>();
-                c.Export<FullDeployer>().As<IFullDeployer>();
                 c.Export<SecureSession>().As<ISecureSession>();
                 c.ExportFactory<string, ProjectMetadata>(ProjectMetadata.FromPath);
                 c.Export<DeploymentUnit>();
                 c.Export<ProfileCreationUnit>();
                 c.ExportFactory<Func<string, IUserSecretsManager>, Deployment, ConnectionInfo>(InputsConverter
                     .ToConnectionInfo).As<ConnectionInfo>();
+                c.ExportFactory<Func<string, IUserSecretsManager>, Deployment, CredentialsManager>(InputsConverter
+                    .ToCredentialManager);
                 c.ExportFactory<Func<string, IDeploymentProfileRepository>, DeploymentOptions, Deployment>(
                     InputsConverter.ToDeployment);
             });
@@ -65,6 +67,7 @@ namespace DotNetSsh.App
             var loggingLevelSwitch = new LoggingLevelSwitch();
             Log.Logger = new LoggerConfiguration()
                 .WriteTo.Console()
+                .WriteTo.File(Path.Combine(Path.GetTempPath(),"ssh-deploy-log.txt"), rollingInterval: RollingInterval.Minute, retainedFileCountLimit: 1)
                 .MinimumLevel.ControlledBy(loggingLevelSwitch)
                 .CreateLogger();
 
