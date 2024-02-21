@@ -1,6 +1,4 @@
-using System.IO;
 using DotNetSsh.UserSecrets;
-using Renci.SshNet;
 using Xunit;
 
 namespace DotNetSsh.Tests
