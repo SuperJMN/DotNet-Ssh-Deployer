@@ -11,6 +11,7 @@
 	<ItemGroup>
 		<PackageReference Include="ByteSize" Version="2.1.2" />
 		<PackageReference Include="CSharpFunctionalExtensions" Version="2.40.3" />
+		<PackageReference Include="LibGit2Sharp" Version="0.29.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="8.0.0" />
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 		<PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />

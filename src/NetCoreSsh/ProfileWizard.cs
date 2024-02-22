@@ -68,6 +68,7 @@ namespace DotNetSsh
             customizableSettings.DestinationPath = $"/home/{user ?? "[USER]"}/DotNetApps/{metadata.ProjectName}";
             customizableSettings.Display = ":0.0";
             customizableSettings.RunAfterDeployment = true;
+            customizableSettings.CheckGitBeforeDeploy = false;
             customizableSettings.CommandAfterDeployment = string.Empty;
             customizableSettings.AssemblyName = metadata.AssemblyName;
             customizableSettings.Framework = metadata.Frameworks.First();

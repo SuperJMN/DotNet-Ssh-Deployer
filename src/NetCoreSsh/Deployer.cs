@@ -9,6 +9,7 @@ using Renci.SshNet;
 using Serilog;
 using System.Diagnostics;
 using DotNetSsh.UserSecrets;
+using LibGit2Sharp;
 
 namespace DotNetSsh
 {
@@ -25,6 +26,31 @@ namespace DotNetSsh
         {
             try
             {
+                if(settings.Settings.CheckGitBeforeDeploy)
+                {
+                    Log.Information("Checking for git status...");
+
+                    using (var repo = new Repository(Path.GetDirectoryName(settings.ProjectPath)))
+                    {
+                        if(repo.Diff.Compare<TreeChanges>().Count > 0)
+                        {
+                            while (true)
+                            {
+                                Log.Information("You have pending git changes continue? (y/n)");
+                                var choice = Console.ReadLine();
+                                if (choice.Equals("y", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    break;
+                                }
+                                else if (choice.Equals("n", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    return Result.Failure($"Deployment failed: pending git changes");
+                                }
+                            }
+                        }
+                    }
+                }
+
                 Log.Information("Starting deployment...");
 
                 using var clients = secureSession();
