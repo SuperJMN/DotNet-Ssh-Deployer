@@ -12,7 +12,7 @@ This will help you deploy your NET Core applications (Console or ASP.NET) to Ras
 
 # Installation
 - Open a command prompt
-- Run `dotnet tool install --global dotnet-ssh`
+- Run `dotnet tool install --global DotNetSsh.App`
 - You're ready to go!
 
 # How do I deploy my application?
