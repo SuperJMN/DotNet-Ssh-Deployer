@@ -120,7 +120,7 @@ namespace DotNetSsh
 
         private static void WriteStream(string cmd, ShellStream stream)
         {
-            stream.WriteLine(cmd + "; echo this-is-the-end");
+            stream.WriteLine(cmd + "; echo \"this-is-the-end\"");
             while (stream.Length == 0)
                 Thread.Sleep(500);
         }
@@ -130,7 +130,7 @@ namespace DotNetSsh
             StringBuilder result = new StringBuilder();
 
             string line;
-            while (!(line = stream.ReadLine()).EndsWith("\rthis-is-the-end"))
+            while (!(line = stream.ReadLine()).EndsWith("this-is-the-end"))
                 result.AppendLine(line);
 
             return result.ToString();
