@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CommandLine.Builder;
-using System.CommandLine.Parsing;
 using System.IO;
 using System.Threading.Tasks;
 using DotNetSsh.UserSecrets;
@@ -14,22 +12,21 @@ namespace DotNetSsh.App
 {
     internal class Program
     {
-        private static async Task Main(string[] args)
+        private static async Task<int> Main(string[] args)
         {
-            var container = CreateContainer();
+            SetupLogging(Array.Exists(args, arg => string.Equals(arg, "--verbose", StringComparison.OrdinalIgnoreCase)));
 
-            var builder = new CommandLineBuilder()
-                .UseDefaults()
-                .UseExceptionHandler((exception, context) =>
-                {
-                    Log.Error(exception, "An error has occurred: {Error}", exception?.InnerException?.Message ?? exception?.Message);
-                })
-                .Configure(container)
-                .Build();
+            var command = CreateContainer().Configure();
 
-            SetupLogging(builder.Parse(args).ValueForOption<bool>("--verbose"));
-
-            await builder.InvokeAsync(args);
+            try
+            {
+                return await command.Parse(args).InvokeAsync();
+            }
+            catch (Exception exception)
+            {
+                Log.Error(exception, "An error has occurred: {Error}", exception?.InnerException?.Message ?? exception?.Message);
+                return 1;
+            }
         }
 
         private static DependencyInjectionContainer CreateContainer()

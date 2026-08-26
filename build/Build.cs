@@ -93,7 +93,7 @@ class Build : NukeBuild
                     .SetSource("https://api.nuget.org/v3/index.json")
                     .SetApiKey(NuGetApiKey)
                     .CombineWith(
-                        OutputDirectory.GlobFiles("*.nupkg").NotEmpty(), (s, v) => s.SetTargetPath(v)),
+                        OutputDirectory.GlobFiles("*.nupkg"), (s, v) => s.SetTargetPath(v)),
                 degreeOfParallelism: 5, completeOnFailure: true);
         });
 

@@ -1,7 +1,5 @@
 ﻿using System;
 using System.CommandLine;
-using System.CommandLine.Builder;
-using System.CommandLine.Invocation;
 using System.IO;
 using System.Linq;
 using Grace.DependencyInjection;
@@ -30,41 +28,91 @@ namespace DotNetSsh.App
             }
         }
 
-        public static CommandLineBuilder Configure(this CommandLineBuilder builder, ILocatorService container)
+        public static RootCommand Configure(this ILocatorService container)
         {
-            var project = new Option<string>("--project", GetDefaultProject);
-            var authType = new Option<AuthType>("--auth-type", "Authentication") {Required = true};
-            var auth = new Option<string>("--auth", "Authentication string");
-            var profile = new Argument<string>("profile");
-            var verbose = new Option<bool>("--verbose", () => false);
-
-            var configureCommand = new Command("configure")
+            var configureProject = new Option<string>("--project", Array.Empty<string>())
             {
-                profile,
-                project,
-                authType,
-                auth,
-                verbose
+                DefaultValueFactory = _ => GetDefaultProject()
+            };
+            var configureAuthType = new Option<AuthType>("--auth-type", Array.Empty<string>())
+            {
+                Description = "Authentication",
+                Required = true
+            };
+            var configureAuth = new Option<string>("--auth", Array.Empty<string>())
+            {
+                Description = "Authentication string"
+            };
+            var configureProfile = new Argument<string>("profile");
+            var configureVerbose = new Option<bool>("--verbose", Array.Empty<string>());
+
+            var configureCommand = new Command("configure", string.Empty)
+            {
+                configureProfile,
+                configureProject,
+                configureAuthType,
+                configureAuth,
+                configureVerbose
             };
 
-            configureCommand.Handler = CommandHandler.Create<ProfileCreationOptions>(options =>
+            configureCommand.SetAction(async parseResult =>
             {
+                var options = new ProfileCreationOptions
+                {
+                    Profile = parseResult.GetValue(configureProfile),
+                    Project = parseResult.GetValue(configureProject),
+                    AuthType = parseResult.GetValue(configureAuthType),
+                    Auth = parseResult.GetValue(configureAuth),
+                    Verbose = parseResult.GetValue(configureVerbose)
+                };
+
                 var creator = container.Locate<ProfileCreationUnit>(options);
-                return creator.Create();
+                await creator.Create();
             });
 
-            var deployCommand = new Command("deploy")
+            var deployProject = new Option<string>("--project", Array.Empty<string>())
             {
-                profile,
-                project,
-                authType,
-                auth,
-                new Option<string>("--configuration", () => "Debug", "Build configuration"),
-                verbose
+                DefaultValueFactory = _ => GetDefaultProject()
+            };
+            var deployAuthType = new Option<AuthType>("--auth-type", Array.Empty<string>())
+            {
+                Description = "Authentication",
+                Required = true
+            };
+            var deployAuth = new Option<string>("--auth", Array.Empty<string>())
+            {
+                Description = "Authentication string"
+            };
+            var deployProfile = new Argument<string>("profile");
+            var deployConfiguration = new Option<string>("--configuration", Array.Empty<string>())
+            {
+                Description = "Build configuration",
+                DefaultValueFactory = _ => "Debug"
+            };
+            var deployVerbose = new Option<bool>("--verbose", Array.Empty<string>());
+
+            var deployCommand = new Command("deploy", string.Empty)
+            {
+                deployProfile,
+                deployProject,
+                deployAuthType,
+                deployAuth,
+                deployConfiguration,
+                deployVerbose
             };
 
-            deployCommand.Handler = CommandHandler.Create<DeploymentOptions>(async options =>
+            deployCommand.SetAction(async parseResult =>
             {
+                var options = new DeploymentOptions
+                {
+                    Profile = parseResult.GetValue(deployProfile),
+                    Project = parseResult.GetValue(deployProject),
+                    AuthType = parseResult.GetValue(deployAuthType),
+                    Auth = parseResult.GetValue(deployAuth),
+                    Configuration = parseResult.GetValue(deployConfiguration),
+                    Verbose = parseResult.GetValue(deployVerbose)
+                };
+
                 var deploymentRequest = container.Locate<DeploymentUnit>(options);
                 var deploy = await deploymentRequest.Deploy();
                 if (deploy.IsFailure)
@@ -73,9 +121,10 @@ namespace DotNetSsh.App
                 }
             });
 
-            builder.AddCommand(configureCommand);
-            builder.AddCommand(deployCommand);
-            return builder;
+            var rootCommand = new RootCommand(string.Empty);
+            rootCommand.Add(configureCommand);
+            rootCommand.Add(deployCommand);
+            return rootCommand;
         }
     }
 }
